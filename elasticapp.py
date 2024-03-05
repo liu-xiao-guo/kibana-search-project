@@ -3,14 +3,19 @@ from elasticsearch import Elasticsearch
 import os
 from datetime import datetime
 
-cloud_id = os.getenv("CLOUD_ID")
-username = os.getenv("USER")
-password = os.getenv("PASSWORD")
+endpoint = os.getenv("ES_SERVER")
+username = os.getenv("ES_USER")
+password = os.getenv("ES_PASSWORD")
+fingerprint = os.getenv("ES_FINGERPRINT")
 
-es = Elasticsearch(
-    cloud_id=cloud_id,
-    basic_auth=(username, password),
-)
+url = f"https://{endpoint}:9200"
+
+es = Elasticsearch( url ,
+    basic_auth = (username, password),
+    ssl_assert_fingerprint = fingerprint,
+    http_compress = True )
+ 
+# print(es.info())
 
 def main():
     st.title("Elasticsearch News App")
